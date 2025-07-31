@@ -6,9 +6,22 @@ import { useState } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TelaRegistro from './TelaRegistro';
 import TelaPrincipal from './TelaPrincipal';
+import { auth } from '../../firebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
-export default function TelaLogin() {
+export default function TelaLogin({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  
+  async function efetuarLogin() {
+    try {
+      await signInWithEmailAndPassword (auth, email, senha);
+      navigation.navigate('TelaPrincipal');
+    } catch (error) {
+      alert('Erro ao efetuar o login!');
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -19,11 +32,13 @@ export default function TelaLogin() {
       />
       <Text style={styles.nomeSistema}>Chama Serviço</Text>
       <Text style={styles.titulo}>Login</Text>
-      <Input placeholder="Email" />
-      <Input placeholder="Senha" secureTextEntry  />
+      <Input placeholder="Email"
+      value={email} onChangeText={setEmail}
+      />
+      <Input placeholder="Senha" secureTextEntry value={senha} onChangeText={setSenha} />
       <Botao 
         titulo="Entrar" 
-        onPress={validarUsuario} 
+        onPress={efetuarLogin} 
       />
       <TouchableOpacity onPress={() => navigation.navigate('TelaRegistro')}>
         <Text style={styles.link}>Não tem conta? Cadastre-se</Text>

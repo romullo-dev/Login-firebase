@@ -1,29 +1,50 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Botao from "../components/Botao";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import TelaLogin from "./TelaLogin";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
-export default function TelaRegistro() {
-  
+export default function TelaRegistro({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmar, setConfirmar] = useState("");
+
+  async function cadastrarUsuario() {
+    if (senha === confirmar) {
+      try {
+        await createUserWithEmailAndPassword(auth, email, senha);
+        navigation.navigate("TelaLogin");
+        Alert.alert("Usuario cadastrado", "Usuario cadastrado!");
+      } catch (error) {
+        Alert.alert("Erro ao cadastrar", error.message);
+      }
+    } else {
+      Alert.alert("senha diferente", "Senhas diferentes");
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Registro</Text>
-      <Input placeholder="Nome Completo"  />
-      <Input placeholder="Email"  />
+      <Input placeholder="Email" value={email} onChangeText={setEmail} />
       <Input
         placeholder="Senha"
         secureTextEntry
+        value={senha}
+        onChangeText={setSenha}
       />
       <Input
         placeholder="Confirmar Senha"
         secureTextEntry
-
+        value={confirmar}
+        onChangeText={setConfirmar}
       />
-      <Botao titulo="Criar Conta"  />
+      <Botao titulo="Criar Conta" onPress={cadastrarUsuario} />
       <TouchableOpacity onPress={() => navigation.navigate("TelaLogin")}>
         <Text style={styles.link}>Já tem conta? Faça login</Text>
       </TouchableOpacity>
