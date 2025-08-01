@@ -34,7 +34,7 @@ export default function TelaRecuperacao() {
       <Text style={styles.titulo}>Login</Text>
       <Input placeholder="Email" value={email} onChangeText={setEmail} />
 
-      <Botao 
+      <Botao ssssssss
         titulo="Recuperar Senha" 
         onPress={recuperarSenha} 
       />
