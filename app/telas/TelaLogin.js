@@ -43,6 +43,9 @@ export default function TelaLogin({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('TelaRegistro')}>
         <Text style={styles.link}>Não tem conta? Cadastre-se</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('TelaRecuperacao')}>
+        <Text style={styles.link}>Esqueceu a senha</Text>
+      </TouchableOpacity>
     </View>
   );
 
